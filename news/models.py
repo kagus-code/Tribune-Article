@@ -8,6 +8,20 @@ class Editor(models.Model):
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
 
+    def save_editor(self):
+        self.save()
+
+    def delete_editor(self, first_name):
+        self.objects.filter(first_name=first_name).delete()
+
+    def update_editor(self, first_name, new_name):
+        self.objects.filter(first_name=first_name).update(first_name=new_name)
+
+    def display_all():
+        all = Editor.objects.all()
+
+        return all
+
     def __str__(self):
         return self.first_name
 
@@ -25,7 +39,7 @@ class tags(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=60)
     post = models.TextField()
-    editor = models.ForeignKey(Editor,on_delete=models.CASCADE)
+    editor = models.ForeignKey(Editor, on_delete=models.CASCADE)
     tags = models.ManyToManyField(tags)
     pub_date = models.DateTimeField(auto_now_add=True)
 
