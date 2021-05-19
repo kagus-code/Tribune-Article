@@ -4,6 +4,10 @@ import datetime as dt
 from .models import Article,NewsLetterRecipients
 from .forms import NewsLetterForm
 from .email import send_welcome_email
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
+
 
 # Create your views here.
 
@@ -61,11 +65,16 @@ def search_results(request):
         message = "You haven't searched for any term"
         return render(request, 'all-news/search.html',{"message":message})
 
-
+@login_required(login_url='/accounts/login/')
 def article(request,article_id):
     try:
         article = Article.objects.get(id = article_id)
     except DoesNotExist:
         raise Http404()
     return render(request,"all-news/article.html", {"article":article})
+
+
+
+
+
 
