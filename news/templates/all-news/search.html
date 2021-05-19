@@ -12,7 +12,7 @@
     {% if articles %} {% for article in articles %}
     <div class="col-md-12">
       <ul>
-        <li><h1>{{article.title}}</h1></li>
+        <li><a href="{% url 'article' article_id=article.id %}"><h1>{{article.title}}</h1></a></li>
       </ul>
     </div>
     {% endfor %} {% endif %}
