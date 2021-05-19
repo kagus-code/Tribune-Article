@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404,HttpResponseRedirect
 import datetime as dt
 from .models import Article,NewsLetterRecipients
-from .forms import NewsLetterForm
+from .forms import NewsLetterForm,NewArticleForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -76,5 +76,19 @@ def article(request,article_id):
 
 
 
+@login_required(login_url='/accounts/login/')
+def new_article(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.editor = current_user
+            article.save()
+        return redirect(news_of_day)
+
+    else:
+        form = NewArticleForm()
+    return render(request, 'new_article.html', {"form": form})
 
 
